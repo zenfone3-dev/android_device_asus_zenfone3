@@ -439,7 +439,8 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_PACKAGES += \
     libcurl \
-    tcpdump
+    tcpdump \
+    AsusParts
 
 # Recovery
 PRODUCT_PACKAGES += \
