@@ -226,6 +226,9 @@ on boot
     # Permissions for Keypad Mode
     chown system system /sys/bus/i2c/devices/i2c-3/3-0038/keypad_mode
 
+    # Permissions for Swipe2Wake
+    chown system system /sys/bus/i2c/devices/i2c-3/3-0038/swipeup_mode
+
     # Amplifier Calibration
     start spk_amp_cal
 
