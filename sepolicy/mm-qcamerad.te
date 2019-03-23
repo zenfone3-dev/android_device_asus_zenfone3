@@ -1,0 +1,6 @@
+allow mm-qcamerad proc_camera:file rw_file_perms;
+allow mm-qcamerad socket_device:dir { write add_name getattr };
+allow mm-qcamerad socket_device:sock_file{ create setattr };
+allow mm-qcamerad factory_file:file r_file_perms;
+allow mm-qcamerad factory_file:dir r_dir_perms;
+allow mm-qcamerad vendor_camera_file:file lock;
