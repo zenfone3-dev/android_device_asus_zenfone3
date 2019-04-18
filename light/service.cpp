@@ -32,8 +32,10 @@ using android::hardware::light::V2_0::implementation::Light;
 
 const static std::string kLcdBacklightPath = "/sys/class/leds/lcd-backlight/brightness";
 const static std::string kLcdMaxBacklightPath = "/sys/class/leds/lcd-backlight/max_brightness";
-const static std::string kRgbLedPath = "/sys/class/leds/rgb/brightness";
-const static std::string kRgbBlinkPath = "/sys/class/leds/rgb/blink";
+const static std::string kRedLedPath = "/sys/class/leds/red/brightness";
+const static std::string kRedBlinkPath = "/sys/class/leds/red/pwm_us";
+const static std::string kGreenLedPath = "/sys/class/leds/green/brightness";
+const static std::string kGreenBlinkPath = "/sys/class/leds/green/pwm_us";
 
 int main() {
     uint32_t lcdMaxBrightness = 255;
@@ -54,23 +56,38 @@ int main() {
         lcdMaxBacklight >> lcdMaxBrightness;
     }
 
-    std::ofstream rgbLed(kRgbLedPath);
-    if (!rgbLed) {
-        LOG(ERROR) << "Failed to open " << kRgbLedPath << ", error=" << errno
+    std::ofstream redLed(kRedLedPath);
+    if (!redLed) {
+        LOG(ERROR) << "Failed to open " << kRedLedPath << ", error=" << errno
                    << " (" << strerror(errno) << ")";
         return -errno;
     }
 
-    std::ofstream rgbBlink(kRgbBlinkPath);
-    if (!rgbBlink) {
-        LOG(ERROR) << "Failed to open " << kRgbBlinkPath << ", error=" << errno
+    std::ofstream redBlink(kRedBlinkPath);
+    if (!redBlink) {
+        LOG(ERROR) << "Failed to open " << kRedBlinkPath << ", error=" << errno
+                   << " (" << strerror(errno) << ")";
+        return -errno;
+    }
+
+    std::ofstream greenLed(kGreenLedPath);
+    if (!greenLed) {
+        LOG(ERROR) << "Failed to open " << kGreenLedPath << ", error=" << errno
+                   << " (" << strerror(errno) << ")";
+        return -errno;
+    }
+
+    std::ofstream greenBlink(kGreenBlinkPath);
+    if (!greenBlink) {
+        LOG(ERROR) << "Failed to open " << kGreenBlinkPath << ", error=" << errno
                    << " (" << strerror(errno) << ")";
         return -errno;
     }
 
     android::sp<ILight> service = new Light(
             {std::move(lcdBacklight), lcdMaxBrightness},
-            std::move(rgbLed), std::move(rgbBlink));
+            std::move(redLed), std::move(redBlink),
+            std::move(greenLed), std::move(greenBlink));
 
     configureRpcThreadpool(1, true);
 

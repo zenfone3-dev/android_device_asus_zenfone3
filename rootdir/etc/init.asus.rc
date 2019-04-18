@@ -38,15 +38,6 @@ on post-fs-data
     chmod 0666 /data/data/emmc_total_size
 # ASUS_BSP --- Gavin_Chang "storage info for AMAX"
 
-#ASUS_BSP Deeo : chown LED attribute +++
-    chmod 0664 /sys/class/leds/red/brightness
-    chmod 0664 /sys/class/leds/green/brightness
-    chown system system /sys/class/leds/red/pwm_us
-    chmod 0664 /sys/class/leds/red/pwm_us
-    chown system system /sys/class/leds/green/pwm_us
-    chmod 0664 /sys/class/leds/green/pwm_us
-#ASUS_BSP Deeo : chown LED attribute ---
-
 #ASUS_BSP+++ Austin "link BLTest for ATD test"
     chmod 0666 /sys/class/leds/lcd-backlight/brightness
     symlink /sys/class/leds/lcd-backlight/brightness /data/data/BLTest

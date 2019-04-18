@@ -45,10 +45,13 @@ namespace V2_0 {
 namespace implementation {
 
 Light::Light(std::pair<std::ofstream, uint32_t>&& lcd_backlight,
-             std::ofstream&& rgb_led, std::ofstream&& rgb_blink)
+             std::ofstream&& red_led, std::ofstream&& red_blink,
+             std::ofstream&& green_led, std::ofstream&& green_blink)
     : mLcdBacklight(std::move(lcd_backlight)),
-      mRgbLed(std::move(rgb_led)),
-      mRgbBlink(std::move(rgb_blink)) {
+      mRedLed(std::move(red_led)),
+      mRedBlink(std::move(red_blink)),
+      mGreenLed(std::move(green_led)),
+      mGreenBlink(std::move(green_blink)) {
     auto attnFn(std::bind(&Light::setAttentionLight, this, std::placeholders::_1));
     auto backlightFn(std::bind(&Light::setLcdBacklight, this, std::placeholders::_1));
     auto batteryFn(std::bind(&Light::setBatteryLight, this, std::placeholders::_1));
@@ -127,12 +130,14 @@ void Light::setSpeakerBatteryLightLocked() {
         setSpeakerLightLocked(mBatteryState);
     } else {
         // Lights off
-        mRgbBlink << 0 << std::endl;
+        mRedLed << 0 << std::endl;
+        mGreenLed << 0 << std::endl;
     }
 }
 
 void Light::setSpeakerLightLocked(const LightState& state) {
-    int rgb, blink;
+    int red, green, blink;
+    int totalMs, pwm, fake_pwm;
     int onMs, offMs;
     uint32_t colorRGB = state.color;
 
@@ -148,16 +153,46 @@ void Light::setSpeakerLightLocked(const LightState& state) {
             break;
     }
 
-    rgb = colorRGB & 0xFFFFFF;
+    red = (colorRGB >> 16) & 0xFF;
+    green = (colorRGB >> 8) & 0xFF;
+
     blink = onMs > 0 && offMs > 0;
 
     // Disable all blinking to start
-    mRgbBlink << 0 << std::endl;
+    mRedBlink << 0 << std::endl;
+    mGreenBlink << 0 << std::endl;
 
     if (blink) {
-        mRgbBlink << rgb << std::endl;
+        totalMs = onMs + offMs;
+        // pwm specifies the ratio of ON versus OFF
+        // pwm = 0 -> always off
+        // pwm = 255 -> always on
+        fake_pwm = (onMs * 255) / totalMs;
+
+        // the low 4 bits are ignored, so round up if necessary
+        if (fake_pwm > 0 && fake_pwm < 16)
+            fake_pwm = 16;
+
+        pwm = offMs * 1000;
+
+        if (green) {
+            mGreenLed << fake_pwm << std::endl;
+            mGreenBlink << pwm << std::endl;
+        } else {
+            mRedLed << fake_pwm << std::endl;
+            mRedBlink << pwm << std::endl;
+        }
     } else {
-        mRgbLed << rgb << std::endl;
+        mRedBlink << 100 << std::endl;
+        mGreenBlink << 100 << std::endl;
+
+        if (!red || (red && green)) {
+            mRedLed << red << std::endl;
+            mGreenLed << green << std::endl;
+        } else {
+            mGreenLed << green << std::endl;
+            mRedLed << red << std::endl;
+        }
     }
 }
 
