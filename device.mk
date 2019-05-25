@@ -325,7 +325,8 @@ PRODUCT_PACKAGES += \
     libOmxVenc \
     libOmxVidcCommon \
     libstagefrighthw \
-    libmm-omxcore
+    libmm-omxcore \
+    libnl
 
 PRODUCT_PACKAGES += \
     android.hardware.media@1.0 \
