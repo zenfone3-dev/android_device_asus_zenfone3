@@ -48,7 +48,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Bluetooth
 PRODUCT_PROPERTY_OVERRIDES += \
     bluetooth.hfp.client=1 \
-    vendor.qcom.bluetooth.soc=pronto \
+    vendor.bluetooth.soc=smd \
+    vendor.qcom.bluetooth.soc=smd \
     ro.qualcomm.bt.hci_transport=smd
 
 # Boot
