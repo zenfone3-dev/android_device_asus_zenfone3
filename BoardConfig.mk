@@ -233,6 +233,11 @@ USE_SENSOR_MULTI_HAL := true
 # Security Patch
 VENDOR_SECURITY_PATCH := "2018-07-01"
 
+# Shims
+TARGET_LD_SHIM_LIBS := \
+    /system/lib/libui.so|libui_shim.so \
+    /system/lib64/libui.so|libui_shim.so
+
 # GPS
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := true
 USE_DEVICE_SPECIFIC_GPS := true
