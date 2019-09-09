@@ -230,9 +230,6 @@ BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
 # Sensors
 USE_SENSOR_MULTI_HAL := true
 
-# Soong namespaces
-PRODUCT_SOONG_NAMESPACES += $(DEVICE_PATH)
-
 # Security Patch
 VENDOR_SECURITY_PATCH := "2018-07-01"
 
