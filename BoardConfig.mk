@@ -184,7 +184,8 @@ TARGET_USES_MKE2FS := true
 # Root symlinks
 BOARD_ROOT_EXTRA_SYMLINKS := \
     /vendor/dsp:/dsp \
-    /vendor/firmware_mnt:/firmware
+    /vendor/firmware_mnt:/firmware \
+    /mnt/vendor/persist:/persist
 
 # Root folders
 BOARD_ROOT_EXTRA_FOLDERS += \
