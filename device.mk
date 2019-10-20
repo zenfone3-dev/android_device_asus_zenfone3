@@ -500,10 +500,6 @@ PRODUCT_PACKAGES += \
     android.system.net.netd@1.0 \
     libandroid_net
 
-# Doze
-PRODUCT_PACKAGES += \
-   ZenfoneDoze
-
 # HIDL
 PRODUCT_PACKAGES += \
     android.hidl.base@1.0 \
