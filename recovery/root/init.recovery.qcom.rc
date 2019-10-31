@@ -1,0 +1,31 @@
+on fs
+    wait /dev/block/platform/soc/${ro.boot.bootdevice}
+    symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
+
+    wait /dev/block/bootdevice/by-name/factory
+    mkdir /factory 0755
+    mount ext4 /dev/block/bootdevice/by-name/factory /factory ro nodev nosuid
+
+on init
+    chmod 0660 /dev/qseecom
+    chown system drmrpc /dev/qseecom
+    chmod 0664 /dev/ion
+    chown system system /dev/ion
+
+on late-fs
+    write /sys/block/dm-0/queue/read_ahead_kb 2048
+    write /sys/block/dm-1/queue/read_ahead_kb 2048
+
+service sbinqseecomd /sbin/qseecomd
+    disabled
+    user root
+    group root
+    seclabel u:r:recovery:s0
+
+on property:ro.crypto.state=encrypted
+    start sbinqseecomd
+
+on property:sys.boot_completed=1
+    write /sys/block/dm-0/queue/read_ahead_kb 512
+    write /sys/block/dm-1/queue/read_ahead_kb 512
+
