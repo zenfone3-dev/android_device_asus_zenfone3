@@ -25,6 +25,9 @@
 /(vendor|system/vendor)/bin/init.chargerled\.sh                       u:object_r:init_led_exec:s0
 
 # Root files
+/asdf(/.*)?                                                                u:object_r:factory_file:s0
+/asusfw(/.*)?                                                              u:object_r:factory_file:s0
+/factory(/.*)?                                                             u:object_r:factory_file:s0
 /firmware(/.*)?                                                            u:object_r:firmware_file:s0
 
 # Sensors
