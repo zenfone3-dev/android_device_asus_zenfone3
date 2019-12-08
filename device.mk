@@ -491,10 +491,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     vndk-sp
 
-# dataservice
-PRODUCT_PACKAGES += \
-    rmnetcli
-
 # Netutils
 PRODUCT_PACKAGES += \
     netutils-wrapper-1.0 \
